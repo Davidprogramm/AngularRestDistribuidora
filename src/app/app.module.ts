@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HomeComponent } from './Components/home/home.component';
-import { ClienteComponent } from './Components/cliente/cliente.component';
+import { ClienteComponent,clienteAcciones,clienteCreate } from './Components/cliente/cliente.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,7 +23,9 @@ import { MatInputModule } from '@angular/material/input';
   declarations: [
     AppComponent,
     HomeComponent,
-    ClienteComponent
+    ClienteComponent,
+    clienteAcciones,
+    clienteCreate
     
   ],
   imports: [
