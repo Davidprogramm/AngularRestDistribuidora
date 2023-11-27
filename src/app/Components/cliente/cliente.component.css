@@ -1,14 +1,86 @@
-
 table {
-    width: 100%;
-  }
-  
-  .mat-mdc-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  td, th {
-    width: 25%;
-  }
-  
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+section {
+  display: table;
+  margin-left: 2rem;
+}
+
+.example-label {
+  display: table-cell;
+  font-size: 14px;
+  margin-left: 8px;
+  min-width: 120px;
+}
+
+.example-button-row {
+  display: table-cell;
+  max-width: 600px;
+ 
+}
+.example-button-row button {
+  margin-left: 2rem;
+}
+
+.example-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.example-flex-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.example-button-container {
+  display: flex;
+  justify-content: center;
+  width: 120px;
+}
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 30px;
+}
+
+html, body {
+  height: 100%;
+}
+.example-card {
+  max-width: 800px;
+}
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 48%; /* Puedes ajustar este valor según sea necesario */
+  margin-bottom: 1rem; /* Espaciado entre grupos */
+}
+::ng-deep .mat-snack-bar-container {
+min-height: 60px; /* Ajusta la altura según sea necesario */
+font-size: 16px; /* Tamaño de fuente */
+line-height: 24px; /* Altura de línea */
+
+}
+.custom-snackbar {
+background-color: #4caf50; /* Color de fondo - verde */
+color: #fff; /* Color del texto - blanco */
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+}
+.button-agregar {
+  margin-top: 10px; /* Puedes ajustar el valor según tus necesidades */
+}

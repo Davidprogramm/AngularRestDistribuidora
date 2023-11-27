@@ -1,47 +1,49 @@
-import {Injectable} from '@angular/core';
-import { HttpClient,HttpHeaders,HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs/internal/Observable';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
 @Injectable({
-    providedIn: 'root',
-}
-  
-    )
+  providedIn: 'root',
+})
+export class PeticionesService {
+  private urlApi: string = "http://localhost:8080";
 
-   
-// creamos un metodo
-export class PeticionesService{
+  constructor(private _http: HttpClient) {}
 
-    //buscamos el Url de la pagina
-    public urlApi:String="";
-    
-  
-    //Se crea el constructor y se inyecta el servicio Http
+  getTiendas(): Observable<any> {
+    const request = "/listtiendas";
+    const url = this.urlApi + request;
 
-    constructor(
+    return this._http.get(url).pipe(
+      map((response: any) => response), // Mapea solo la data
+      catchError((error) => throwError(() => error)) // Maneja errores
+    );
+  }
 
-        private _http:HttpClient
-        
-    ){
-        this.urlApi="http://localhost:8080"
+  addTienda(nuevaTienda: any): Observable<any> {
+    const request = "/addtienda";
+    const url = this.urlApi + request;
+    const objetoJson = JSON.stringify(nuevaTienda);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
 
+    return this._http.post(url, objetoJson, { headers }).pipe(
+      map((response: any) => response), // Mapea solo la data
+      catchError((error) => throwError(() => error)) // Maneja errores
+    );
+  }
 
-    }
+  updateTienda(update:any):Observable<any>{
+    const request = "/updatetienda";
 
-    // creamos un metodo
-    getTiendas():Observable<any>{       
-        
-       var request= "/listartiendas"
-       var url=this.urlApi+request
-       return this._http.get(url)
+    const url = this.urlApi + request;
 
-    }
-    addTienda(nuevaTienda:any):Observable<any>{
-        var request= "/addtienda"
-        var url=this.urlApi+request
-        let objetoJson=JSON.stringify(nuevaTienda);
-        var header= new HttpHeaders().set("Content-Type","application/json")
-        return this._http.post(url,objetoJson,{headers: header})
-       
-    }
-  
+    const objetoJson = JSON.stringify(update);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    return this._http.post(url, objetoJson, { headers }).pipe(
+      map((response: any) => response), 
+      catchError((error) => throwError(() => error)) 
+    );
+  }
 }

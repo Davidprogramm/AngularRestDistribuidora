@@ -47,9 +47,7 @@ export class ClienteComponent  implements AfterViewInit,OnInit {
   }
   openDialog() {
     const dialogRef = this.dialog.open(clienteCreate);
-
     dialogRef.componentInstance.formularioEnviado.subscribe(() => {
-      // Actualizar la tabla después de que el formulario se envía con éxito
       this.create();
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -134,7 +132,7 @@ export class clienteCreate implements OnInit {
 
   formulario: FormGroup = this.fb.group({
     
-    nombre: ['', Validators.required],
+    nombre_tienda: ['', Validators.required],
     encargado: ['', Validators.required],
     direccion: ['', Validators.required],
     departamento: ['', Validators.required],

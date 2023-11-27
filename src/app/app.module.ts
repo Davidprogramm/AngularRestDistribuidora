@@ -18,17 +18,25 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
+import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ClienteComponent,
-    clienteAcciones,
-    clienteCreate
-    
+    clienteCreate,
+    clienteAcciones    
   ],
   imports: [
+    MatCardModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     BrowserModule,  
     MatSortModule,  
     MatInputModule,

@@ -1,6 +1,6 @@
 
 export interface UsuarioCrear {
-  nombre: string;
+  nombre_tienda: string;
   encargado: string;
   direccion: string;
   municipio: string;
