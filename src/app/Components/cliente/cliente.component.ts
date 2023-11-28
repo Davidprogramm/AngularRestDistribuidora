@@ -10,6 +10,8 @@ import { UsuarioCrear } from '../Models/usuario-crear.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Output, EventEmitter } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
 
 
 export interface UserData {
@@ -19,7 +21,7 @@ export interface UserData {
   municipio: string;
   telefono:string;
   email: string; 
-  nombre:string;
+  nombre_tienda:string;
   direccion:string;
 
 }
@@ -97,9 +99,15 @@ export class ClienteComponent  implements AfterViewInit,OnInit {
 console.log(row);
     const dialogRef = this.dialog.open(clienteAcciones);
 
-    // Establece los datos directamente en la propiedad del componente
     dialogRef.componentInstance.datosActualizar = row;
   
+    dialogRef.componentInstance.tiendaEliminada.subscribe(() => {
+      this.create();
+    });
+
+    dialogRef.componentInstance.tiendaActualizada.subscribe(() => {
+      this.create();
+    });
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
@@ -188,17 +196,27 @@ export class clienteAcciones implements OnInit {
 
   datosActualizar: UserData | undefined;
  formulario!: FormGroup; // el ! indica que sera definido despues del contructor 
+ dialogRef: MatDialogRef<clienteAcciones>;
+ @Output() tiendaEliminada: EventEmitter<void> = new EventEmitter<void>();
+ @Output() tiendaActualizada: EventEmitter<void> = new EventEmitter<void>();
+
+
  constructor(private fb: FormBuilder,
   private _service: PeticionesService,  
-  private snackBar: MatSnackBar
-  ) {}
+  private snackBar: MatSnackBar,
+  dialogRef: MatDialogRef<clienteAcciones>
+  
+
+  ) {    
+    this.dialogRef = dialogRef;
+  }
   
 
 ngOnInit(): void {
 console.log(this.datosActualizar)
   this.formulario = this.fb.group({
     id_tienda: [this.datosActualizar?.id_tienda || ''],
-    nombre:[this.datosActualizar?.nombre || '',Validators.required],
+    nombre_tienda:[this.datosActualizar?.nombre_tienda || '',Validators.required],
     encargado: [this.datosActualizar?.encargado || '', Validators.required],
     direccion:[this.datosActualizar?.direccion || '',Validators.required], 
     departamento: [this.datosActualizar?.departamento || '', Validators.required],
@@ -210,7 +228,7 @@ console.log(this.datosActualizar)
   });
 }
 
-enviarActualizar(){
+update(){
   if (this.formulario.valid) {
 
     const usuarioCrear: UsuarioCrear = this.formulario.value;
@@ -219,7 +237,8 @@ enviarActualizar(){
       (res)=>{
         console.log(res)
         this.mostrarSnackBar('Tienda Actualizada con éxito');
-
+        this.tiendaActualizada.emit();
+        this.dialogRef.close(); 
       },
       (error)=>{
         console.log(error)
@@ -232,11 +251,31 @@ enviarActualizar(){
     console.log('Formulario no válido. No se puede enviar.');
   }
 }
+deleteTienda() {
+  const idTienda = this.datosActualizar?.id_tienda;
+  if (idTienda) {
+    this._service.deleteTienda(idTienda).subscribe(
+      (res) => {
+        console.log(res);
+        this.mostrarSnackBar('Tienda Eliminada con éxito');
+        this.tiendaEliminada.emit();
+
+        this.dialogRef.close();
+      },
+      (error) => {
+        console.error(error);
+        this.mostrarSnackBar('Error al eliminar la tienda');
+      }
+    );
+  } else {
+    console.error('ID de tienda no válido');
+  }
+}
 
 mostrarSnackBar(mensaje: string) {
   this.snackBar.open(mensaje, 'Cerrar', {
-    duration: 10000, // Duración del mensaje en milisegundos (10 segundos en este caso)
-    verticalPosition: 'top' // Posición vertical superior      
+    duration: 10000, 
+    verticalPosition: 'top'    
   });
 }
 }

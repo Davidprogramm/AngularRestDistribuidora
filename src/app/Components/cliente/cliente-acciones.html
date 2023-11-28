@@ -1,0 +1,71 @@
+<!-- cliente acciones --><!-- cliente-acciones.html -->
+<mat-dialog-content class="formulario-container">
+    <h2 mat-dialog-title>Actualizar Tienda</h2>
+    <form [formGroup]="formulario" (ngSubmit)="update()">
+      <div class="form-row">
+        <div class="form-column">
+          <label class="input-label">Nombre Tienda</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Nombre Tienda" formControlName="nombre_tienda" (keydown.enter)="$event.preventDefault()">
+            <mat-error *ngIf="formulario.get('nombre_tienda')?.invalid && (formulario.get('nombre_tienda')?.dirty || formulario.get('nombre_tienda')?.touched)">
+              Nombre de tienda es un campo requerido
+            </mat-error>
+          </mat-form-field>
+  
+          <label class="input-label">Encargado</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Encargado" formControlName="encargado">
+          </mat-form-field>
+        </div>
+  
+        <div class="form-column">
+          <label class="input-label">ID</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="ID" formControlName="id_tienda">
+          </mat-form-field>
+  
+          <label class="input-label">Dirección</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Dirección" formControlName="direccion">
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-column">
+          <label class="input-label">Departamento</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Departamento" formControlName="departamento">
+          </mat-form-field>
+        </div>
+  
+        <div class="form-column">
+          <label class="input-label">Municipio</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Municipio" formControlName="municipio">
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row" >
+        <div class="form-column">
+          <label class="input-label">Teléfono</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Teléfono" formControlName="telefono">
+          </mat-form-field>
+        </div>
+  
+        <div class="form-column">
+          <label class="input-label">Email</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Email" formControlName="email">
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <mat-dialog-actions align="end">
+        <button mat-raised-button color="warn" (click)="deleteTienda()">Eliminar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="formulario.invalid">Actualizar</button>
+      </mat-dialog-actions>
+    </form>
+  </mat-dialog-content>

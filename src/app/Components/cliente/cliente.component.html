@@ -8,50 +8,42 @@
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort>
 
-    <!-- ID Tienda Column -->
     <ng-container matColumnDef="nombre">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Tienda </th>
       <td mat-cell *matCellDef="let row"> {{row.nombre_tienda}} </td>
     </ng-container>
 
-    <!-- Encargado Column -->
     <ng-container matColumnDef="encargado">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Encargado </th>
       <td mat-cell *matCellDef="let row"> {{row.encargado}} </td>
     </ng-container>
 
-    <!-- Departamento Column -->
     <ng-container matColumnDef="departamento">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento </th>
       <td mat-cell *matCellDef="let row"> {{row.departamento}} </td>
     </ng-container>
 
-    <!-- Municipio Column -->
     <ng-container matColumnDef="municipio">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipio </th>
       <td mat-cell *matCellDef="let row"> {{row.municipio}} </td>
     </ng-container>
 
-    <!-- Teléfono Column -->
     <ng-container matColumnDef="telefono">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
       <td mat-cell *matCellDef="let row"> {{row.telefono}} </td>
     </ng-container>
 
-    <!-- Email Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
       <td mat-cell *matCellDef="let row"> {{row.email}} </td>
     </ng-container>
 
 
-    <!-- Dirección Column -->
     <ng-container matColumnDef="direccion">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
       <td mat-cell *matCellDef="let row"> {{row.direccion}} </td>
     </ng-container>
 
-    <!-- Actions Column -->
     <ng-container matColumnDef="accion">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let row">

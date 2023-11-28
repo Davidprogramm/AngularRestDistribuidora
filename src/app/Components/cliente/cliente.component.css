@@ -67,20 +67,40 @@ html, body {
 .form-group {
   display: flex;
   flex-direction: column;
-  width: 48%; /* Puedes ajustar este valor según sea necesario */
-  margin-bottom: 1rem; /* Espaciado entre grupos */
+  width: 48%; 
+  margin-bottom: 1rem; 
 }
 ::ng-deep .mat-snack-bar-container {
-min-height: 60px; /* Ajusta la altura según sea necesario */
-font-size: 16px; /* Tamaño de fuente */
-line-height: 24px; /* Altura de línea */
-
+min-height: 60px;
+font-size: 16px; 
+line-height: 24px;
 }
 .custom-snackbar {
-background-color: #4caf50; /* Color de fondo - verde */
-color: #fff; /* Color del texto - blanco */
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+background-color: #4caf50;
+color: #fff;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 .button-agregar {
-  margin-top: 10px; /* Puedes ajustar el valor según tus necesidades */
+  margin-top: 10px;
+}
+
+.formulario-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.form-column {
+  flex: 1;
+  margin-bottom: 1rem;
+  margin-right: 2rem;
+}
+
+.full-width {
+  width: 100%;
 }

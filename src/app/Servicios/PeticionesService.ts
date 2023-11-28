@@ -46,4 +46,15 @@ export class PeticionesService {
       catchError((error) => throwError(() => error)) 
     );
   }
+
+  deleteTienda(id: string): Observable<any> {
+    const request = "/deletetienda/" + id;
+    const url = this.urlApi + request;
+  
+    return this._http.delete(url).pipe(
+      map((response: any) => response),
+      catchError((error) => throwError(() => error))
+    );
+  }
+  
 }
