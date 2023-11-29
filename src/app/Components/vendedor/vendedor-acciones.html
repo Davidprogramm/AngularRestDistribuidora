@@ -1,0 +1,85 @@
+<!-- cliente acciones --><!-- cliente-acciones.html -->
+<mat-dialog-content class="formulario-container">
+    <h2 mat-dialog-title>Actualizar Vendedor</h2>
+    <form [formGroup]="formulario" (ngSubmit)="update()">
+      <div class="form-row">
+        <div class="form-column">
+          <label class="input-label">ID</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="ID" formControlName="id_vendedor" (keydown.enter)="$event.preventDefault()">
+            <mat-error *ngIf="formulario.get('id_vendedor')?.invalid && (formulario.get('id_vendedor')?.dirty || formulario.get('id_vendedor')?.touched)">
+              Nombre de tienda es un campo requerido
+            </mat-error>
+          </mat-form-field>
+  
+          <label class="input-label">Identificacion</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Identificacion" formControlName="identificacion">
+            <mat-error *ngIf="formulario.get('identificacion')?.invalid && (formulario.get('identificacion')?.dirty || formulario.get('identificacion')?.touched)">
+                identificacion es un campo requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="form-column">
+          <label class="input-label">Nombre</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Nombre" formControlName="nombre">
+            <mat-error *ngIf="formulario.get('nombre')?.invalid && (formulario.get('nombre')?.dirty || formulario.get('nombre')?.touched)">
+                Nombre es un campo requerido
+              </mat-error>
+
+            
+          </mat-form-field>
+  
+          <label class="input-label">Apellido</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Apellido" formControlName="apellido">
+            <mat-error *ngIf="formulario.get('apellido')?.invalid && (formulario.get('apellido')?.dirty || formulario.get('apellido')?.touched)">
+                Apellido es un campo requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-column">
+          <label class="input-label">Direccion</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Direccion" formControlName="direccion">
+            <mat-error *ngIf="formulario.get('direccion')?.invalid && (formulario.get('direccion')?.dirty || formulario.get('direccion')?.touched)">
+                Direccion es un campo requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="form-column">
+          <label class="input-label">Telefono</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Telefono" formControlName="telefono">
+            <mat-error *ngIf="formulario.get('telefono')?.invalid && (formulario.get('telefono')?.dirty || formulario.get('telefono')?.touched)">
+                Telefono es un campo requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row" > 
+  
+        <div class="form-column">
+          <label class="input-label">Email</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Email" formControlName="email">
+            <mat-error *ngIf="formulario.get('email')?.invalid && (formulario.get('email')?.dirty || formulario.get('email')?.touched)">
+                Email es un campo requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <mat-dialog-actions align="end">
+        <button mat-raised-button color="warn" (click)="delete()">Eliminar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="formulario.invalid">Actualizar</button>
+      </mat-dialog-actions>
+    </form>
+  </mat-dialog-content>

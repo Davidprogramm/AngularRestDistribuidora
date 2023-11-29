@@ -56,5 +56,53 @@ export class PeticionesService {
       catchError((error) => throwError(() => error))
     );
   }
+
+  // VENDEDORES 
   
+  getVendedores(): Observable<any> {
+    const request = "/listvendedores";
+    const url = this.urlApi + request;
+
+    return this._http.get(url).pipe(
+      map((response: any) => response), // Map only the data
+      catchError((error) => throwError(() => error)) // Handle errors
+    );
+  }
+
+  addVendedor(nuevoVendedor: any): Observable<any> {
+    const request = "/addvendedor";
+    const url = this.urlApi + request;
+    const objetoJson = JSON.stringify(nuevoVendedor);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    return this._http.post(url, objetoJson, { headers }).pipe(
+      map((response: any) => response), // Map only the data
+      catchError((error) => throwError(() => error)) // Handle errors
+    );
+  }
+
+  updateVendedor(update: any): Observable<any> {
+    const request = "/updatevendedor";
+    const url = this.urlApi + request;
+
+    const objetoJson = JSON.stringify(update);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    return this._http.post(url, objetoJson, { headers }).pipe(
+      map((response: any) => response),
+      catchError((error) => throwError(() => error))
+    );
+  }
+
+  deleteVendedor(id: string): Observable<any> {
+    const request = "/deletevendedor/" + id;
+    const url = this.urlApi + request;
+
+    return this._http.delete(url).pipe(
+      map((response: any) => response),
+      catchError((error) => throwError(() => error))
+    );
+  }
+  
+
 }

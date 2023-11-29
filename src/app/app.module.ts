@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { VendedorComponent,VendedorAcciones,VendedorCreate } from './Components/vendedor/vendedor.component';
 
 
 @NgModule({
@@ -30,7 +31,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     HomeComponent,
     ClienteComponent,
     clienteCreate,
-    clienteAcciones    
+    clienteAcciones,
+    VendedorComponent,
+    VendedorAcciones,
+    VendedorCreate
   ],
   imports: [
     MatCardModule,

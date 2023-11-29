@@ -8,3 +8,12 @@ export interface UsuarioCrear {
   telefono: string;
   email: string;
 }
+
+export interface VendedorCrear{
+  identificacion:string;
+  nombre:string;
+  apellido:string;
+  direccion:string;
+  telefono:string;
+  email:string;  
+}
