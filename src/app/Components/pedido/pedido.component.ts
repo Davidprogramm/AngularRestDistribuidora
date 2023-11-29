@@ -15,25 +15,24 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 
 export interface UserData {
-  id_vendedor: string;
-  identificacion: string;
-  nombre: string;
-  apellido: string;
-  direccion:string;
-  email: string; 
-  telefono:string;  
+  id_pedido: string;
+  fecha: string;
+  forma_pago: string;
+  estado: string;
+  id_vendedor:string;
+  id_tienda: string;  
 
 }
 
 @Component({
-  selector: 'app-vendedor',
-  templateUrl: './vendedor.component.html',
-  styleUrl: './vendedor.component.css'
+  selector: 'app-pedido',
+  templateUrl: './pedido.component.html',
+  styleUrl: './pedido.component.css'
 })
-export class VendedorComponent  implements AfterViewInit,OnInit {
+export class PedidoComponent  implements AfterViewInit,OnInit {
  
   public datosActualizar:any={}
-  displayedColumns: string[] = ['fecha', 'forma_pago', 'estado', 'id_vendedor', 'id_tienda','accion'];
+  displayedColumns: string[] = ['fecha', 'forma_pago', 'estado', 'vendedor', 'sucursal','accion'];
   dataSource: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -47,7 +46,7 @@ export class VendedorComponent  implements AfterViewInit,OnInit {
     this.dataSource = new MatTableDataSource<UserData>();
   }
   openDialog() {
-    const dialogRef = this.dialog.open(VendedorCreate);
+    const dialogRef = this.dialog.open(PedidoCreate);
     dialogRef.componentInstance.formularioEnviado.subscribe(() => {
       this.create();
     });
@@ -75,7 +74,7 @@ export class VendedorComponent  implements AfterViewInit,OnInit {
 
 
   create(){
-    this._service.getVendedores().subscribe(
+    this._service.getPedido().subscribe(
       (res)=>{
         console.log(res)
         this.dataSource.data = res;
@@ -96,7 +95,7 @@ export class VendedorComponent  implements AfterViewInit,OnInit {
   openDialogAcciones(row: UserData):void {
      
 console.log(row);
-    const dialogRef = this.dialog.open(VendedorAcciones);
+    const dialogRef = this.dialog.open(PedidoAcciones);
 
     dialogRef.componentInstance.datosActualizar = row;
   
@@ -118,14 +117,14 @@ console.log(row);
 }
 
 @Component({
-  selector: 'vendedor-create',
-  templateUrl: './vendedor-create.html',
-  styleUrl: './vendedor.component.css'
+  selector: 'pedido-create',
+  templateUrl: './pedido-create.html',
+  styleUrl: './pedido.component.css'
 
 
 })
 
-export class VendedorCreate implements OnInit {
+export class PedidoCreate implements OnInit {
 
   constructor(  private fb: FormBuilder,
     private _service: PeticionesService,
@@ -139,12 +138,12 @@ export class VendedorCreate implements OnInit {
 
   formulario: FormGroup = this.fb.group({
     
-    identificacion: ['', Validators.required],
-    nombre: ['', Validators.required],
-    apellido: ['', Validators.required],
-    direccion: ['', Validators.required],
-    telefono: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]]
+    fecha: ['', Validators.required],
+    forma_pago: ['', Validators.required],
+    estado: ['', Validators.required],
+    id_vendedor: ['', Validators.required],
+    id_tienda: ['', Validators.required],
+    
   });
 ngOnInit(): void {
 
@@ -153,16 +152,18 @@ ngOnInit(): void {
   enviarFormulario() {
     if (this.formulario.valid) {
       const usuarioCrear: VendedorCrear = this.formulario.value;
+      const id_vendedor:string=""
+      const id_tienda:string=""
       console.log(usuarioCrear);
-      this._service.addVendedor(usuarioCrear).subscribe(
+      this._service.addPedido(usuarioCrear,id_vendedor,id_tienda).subscribe(
         (res)=>{
           console.log(res)
-          this.mostrarSnackBar('Vendedor creado con éxito');
+          this.mostrarSnackBar('Pedido creado con éxito');
           this.formularioEnviado.emit();    
         },
         (error)=>{
           console.log(error)
-          this.mostrarSnackBar('Error al crear Vendedor');
+          this.mostrarSnackBar('Error al crear Pedido');
         }       
 
       )
@@ -181,19 +182,19 @@ ngOnInit(): void {
 
 
 @Component({
-  selector: 'vendedor-acciones',
-  templateUrl: './vendedor-acciones.html',
-  styleUrl: './vendedor.component.css'
+  selector: 'pedido-acciones',
+  templateUrl: './pedido-acciones.html',
+  styleUrl: './pedido.component.css'
   
 
 })
 
 
-export class VendedorAcciones implements OnInit {
+export class PedidoAcciones implements OnInit {
 
   datosActualizar: UserData | undefined;
- formulario!: FormGroup; // el ! indica que sera definido despues del contructor 
- dialogRef: MatDialogRef<VendedorAcciones>;
+ formulario!: FormGroup; 
+ dialogRef: MatDialogRef<PedidoAcciones>;
  @Output() Eliminar: EventEmitter<void> = new EventEmitter<void>();
  @Output() Actualzar: EventEmitter<void> = new EventEmitter<void>();
 
@@ -201,7 +202,7 @@ export class VendedorAcciones implements OnInit {
  constructor(private fb: FormBuilder,
   private _service: PeticionesService,  
   private snackBar: MatSnackBar,
-  dialogRef: MatDialogRef<VendedorAcciones>
+  dialogRef: MatDialogRef<PedidoAcciones>
   
 
   ) {    
@@ -212,13 +213,12 @@ export class VendedorAcciones implements OnInit {
 ngOnInit(): void {
 console.log(this.datosActualizar)
   this.formulario = this.fb.group({
-    id_vendedor: [this.datosActualizar?.id_vendedor || ''],
-    identificacion:[this.datosActualizar?.identificacion || '',Validators.required],
-    nombre: [this.datosActualizar?.nombre || '', Validators.required],
-    apellido:[this.datosActualizar?.apellido || '',Validators.required], 
-    direccion: [this.datosActualizar?.direccion || '', Validators.required],
-    telefono: [this.datosActualizar?.telefono || '', Validators.required],   
-    email: [this.datosActualizar?.email || '', [Validators.required, Validators.email]],
+    id_pedido: [this.datosActualizar?.id_pedido || ''],
+    fecha:[this.datosActualizar?.fecha || '',Validators.required],
+    forma_pago: [this.datosActualizar?.forma_pago || '', Validators.required],
+    estado:[this.datosActualizar?.estado || '',Validators.required], 
+    id_vendedor: [this.datosActualizar?.id_vendedor || '', Validators.required],
+    id_tienda: [this.datosActualizar?.id_tienda || '', Validators.required],   
 
 
   });
@@ -228,11 +228,13 @@ update(){
   if (this.formulario.valid) {
 
     const usuarioCrear: VendedorCrear = this.formulario.value;
+    const id_vendedor:string=""
+    const id_tienda:string=""
     console.log (usuarioCrear)
-    this._service.updateVendedor(usuarioCrear).subscribe(
+    this._service.updatePedido(usuarioCrear,id_vendedor,id_tienda).subscribe(
       (res)=>{
         console.log(res)
-        this.mostrarSnackBar('Vendedor Actualizado con Exito');
+        this.mostrarSnackBar('Pedido Actualizado con Exito');
         this.Actualzar.emit();
         this.dialogRef.close(); 
       },
@@ -248,19 +250,19 @@ update(){
   }
 }
 delete() {
-  const idTienda = this.datosActualizar?.id_vendedor;
-  if (idTienda) {
-    this._service.deleteVendedor(idTienda).subscribe(
+  const idPedido = this.datosActualizar?.id_vendedor;
+  if (idPedido) {
+    this._service.deletePedido(idPedido).subscribe(
       (res) => {
         console.log(res);
-        this.mostrarSnackBar('Vendedor Eliminado con éxito');
+        this.mostrarSnackBar('Pedido Eliminado con éxito');
         this.Eliminar.emit();
 
         this.dialogRef.close();
       },
       (error) => {
         console.error(error);
-        this.mostrarSnackBar('Error al eliminar el Vendedor');
+        this.mostrarSnackBar('Error al eliminar ');
       }
     );
   } else {

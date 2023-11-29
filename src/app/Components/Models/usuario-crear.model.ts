@@ -17,3 +17,11 @@ export interface VendedorCrear{
   telefono:string;
   email:string;  
 }
+export interface PedidoCrear{
+  fecha:string;
+  forma_pago:string;
+  estado:string;
+  id_vendedor:string;
+  id_tienda:string;
+ 
+}

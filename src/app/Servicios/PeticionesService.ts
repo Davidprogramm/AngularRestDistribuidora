@@ -69,6 +69,8 @@ export class PeticionesService {
     );
   }
 
+  
+
   addVendedor(nuevoVendedor: any): Observable<any> {
     const request = "/addvendedor";
     const url = this.urlApi + request;
@@ -103,6 +105,52 @@ export class PeticionesService {
       catchError((error) => throwError(() => error))
     );
   }
+
+// PEDIDO 
+  
+getPedido(): Observable<any> {
+  const request = "/dellatepedido";
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response), 
+    catchError((error) => throwError(() => error)) 
+  );
+}
+
+
+
+addPedido(nuevo: any,id_vendedor:string,id_tienda:string): Observable<any> {
+  const request = "/addpedido/"+id_vendedor+"/"+id_tienda;
+  const url = this.urlApi + request;
+  const objetoJson = JSON.stringify(nuevo);
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+  return this._http.post(url, objetoJson, { headers }).pipe(
+    map((response: any) => response), 
+    catchError((error) => throwError(() => error)) 
+  );
+}
+
+updatePedido(update: any,id_vendedor:string,id_tienda:string): Observable<any> {
+  const request = "/updatepedido"+id_vendedor+"/"+id_tienda;
+  const url = this.urlApi + request;
+  const objetoJson = JSON.stringify(update);
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+  return this._http.post(url, objetoJson, { headers }).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
+deletePedido(id: string): Observable<any> {
+  const request = "/deletepedido/" + id;
+  const url = this.urlApi + request;
+
+  return this._http.delete(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
   
 
 }

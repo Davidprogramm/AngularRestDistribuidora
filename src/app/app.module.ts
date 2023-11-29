@@ -23,6 +23,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { VendedorComponent,VendedorAcciones,VendedorCreate } from './Components/vendedor/vendedor.component';
+import { PedidoComponent,PedidoAcciones,PedidoCreate } from './Components/pedido/pedido.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { VendedorComponent,VendedorAcciones,VendedorCreate } from './Components/
     clienteAcciones,
     VendedorComponent,
     VendedorAcciones,
-    VendedorCreate
+    VendedorCreate,
+    PedidoComponent,PedidoAcciones,PedidoCreate
   ],
   imports: [
     MatCardModule,
