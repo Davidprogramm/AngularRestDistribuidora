@@ -33,7 +33,7 @@ export interface UserData {
 export class VendedorComponent  implements AfterViewInit,OnInit {
  
   public datosActualizar:any={}
-  displayedColumns: string[] = ['fecha', 'forma_pago', 'estado', 'id_vendedor', 'id_tienda','accion'];
+  displayedColumns: string[] = ['identificacion', 'nombre', 'direccion', 'telefono','email','accion'];
   dataSource: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -43,7 +43,6 @@ export class VendedorComponent  implements AfterViewInit,OnInit {
     private fb: FormBuilder
     ){
 
-    // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource<UserData>();
   }
   openDialog() {
@@ -223,9 +222,10 @@ console.log(this.datosActualizar)
 
   });
 }
-
+public borrar:boolean=false;
 update(){
-  if (this.formulario.valid) {
+  this.borrar=false
+  if (this.formulario.valid && this.borrar) {
 
     const usuarioCrear: VendedorCrear = this.formulario.value;
     console.log (usuarioCrear)

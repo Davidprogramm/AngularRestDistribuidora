@@ -23,8 +23,10 @@ import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { VendedorComponent,VendedorAcciones,VendedorCreate } from './Components/vendedor/vendedor.component';
-import { PedidoComponent,PedidoAcciones,PedidoCreate } from './Components/pedido/pedido.component';
-
+import { PedidoComponent,PedidoAcciones,PedidoCreate,PedidoDelete } from './Components/pedido/pedido.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -36,10 +38,13 @@ import { PedidoComponent,PedidoAcciones,PedidoCreate } from './Components/pedido
     VendedorComponent,
     VendedorAcciones,
     VendedorCreate,
-    PedidoComponent,PedidoAcciones,PedidoCreate
+    PedidoComponent,PedidoAcciones,PedidoCreate,PedidoDelete
   ],
   imports: [
     MatCardModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatDialogModule,
     ReactiveFormsModule,
     HttpClientModule,

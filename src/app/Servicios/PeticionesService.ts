@@ -78,8 +78,8 @@ export class PeticionesService {
     const headers = new HttpHeaders().set("Content-Type", "application/json");
 
     return this._http.post(url, objetoJson, { headers }).pipe(
-      map((response: any) => response), // Map only the data
-      catchError((error) => throwError(() => error)) // Handle errors
+      map((response: any) => response), 
+      catchError((error) => throwError(() => error)) 
     );
   }
 
@@ -120,18 +120,19 @@ getPedido(): Observable<any> {
 
 
 addPedido(nuevo: any,id_vendedor:string,id_tienda:string): Observable<any> {
-  const request = "/addpedido/"+id_vendedor+"/"+id_tienda;
+  const request = "/addpedido/"+id_vendedor+"/"+id_tienda
   const url = this.urlApi + request;
   const objetoJson = JSON.stringify(nuevo);
-  const headers = new HttpHeaders().set("Content-Type", "application/json");
-  return this._http.post(url, objetoJson, { headers }).pipe(
-    map((response: any) => response), 
-    catchError((error) => throwError(() => error)) 
+  const headers = new HttpHeaders().set("Content-Type","application/json");
+  return this._http.post(url,objetoJson,{headers }).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
   );
 }
 
-updatePedido(update: any,id_vendedor:string,id_tienda:string): Observable<any> {
-  const request = "/updatepedido"+id_vendedor+"/"+id_tienda;
+
+updatePedido(update: any,id_v:string,id_t:string): Observable<any> {
+  const request = "/updatepedido/"+id_v+"/"+id_t;
   const url = this.urlApi + request;
   const objetoJson = JSON.stringify(update);
   const headers = new HttpHeaders().set("Content-Type", "application/json");
@@ -142,9 +143,8 @@ updatePedido(update: any,id_vendedor:string,id_tienda:string): Observable<any> {
 }
 
 deletePedido(id: string): Observable<any> {
-  const request = "/deletepedido/" + id;
+  const request = "/deletepedido/"+id;
   const url = this.urlApi + request;
-
   return this._http.delete(url).pipe(
     map((response: any) => response),
     catchError((error) => throwError(() => error))

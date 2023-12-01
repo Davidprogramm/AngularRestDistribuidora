@@ -1,0 +1,61 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>AGREGAR</mat-card-title>
+        <mat-card-subtitle>Vendedor</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()">
+            <div class="form-row">
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-label>FECHA</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                      <mat-form-field>
+                        <mat-label>Forma de Pago</mat-label>
+                        <mat-select formControlName="forma_pago">
+                          <mat-option *ngFor="let formaPago of opcionFormaPago" [value]="formaPago">
+                            {{ formaPago }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field>
+                        <input matInput placeholder="Estado" formControlName="estado" readonly>
+                      </mat-form-field>
+                      
+                    <mat-form-field>
+                        <mat-label>ID Vendedor</mat-label>
+                        <mat-select formControlName="id_vendedor">
+                           <mat-option *ngFor="let vendedor of datosVendedor" [value]="vendedor.id_vendedor">
+                            {{ vendedor.nombre }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-label>ID Tienda</mat-label>
+                        <mat-select formControlName="id_tienda">
+                           <mat-option *ngFor="let tienda of datosTienda" [value]="tienda.id_tienda">
+                            {{ tienda.nombre_tienda }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>                  
+                </div>            
+            </div>
+            <button mat-raised-button color="primary" type="submit" [disabled]="formulario.invalid">
+            Enviar
+          </button>        
+        </form>
+    </mat-card-content>
+</mat-card>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+   
+    
+</mat-dialog-actions>

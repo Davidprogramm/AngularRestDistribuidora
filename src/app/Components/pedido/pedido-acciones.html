@@ -1,0 +1,78 @@
+<mat-dialog-content class="formulario-container">
+    <h2 mat-dialog-title>Actualizar Vendedor</h2>
+    <form [formGroup]="formulario" (ngSubmit)="update()">
+      <div class="form-row">
+        <div class="form-column">
+          <label class="input-label">ID</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="ID" formControlName="id_pedido" (keydown.enter)="$event.preventDefault()">
+            <mat-error *ngIf="formulario.get('id_pedido')?.invalid && (formulario.get('id_pedido')?.dirty || formulario.get('id_pedido')?.touched)">
+                id_pedido de tienda es un campo requerido
+            </mat-error>
+          </mat-form-field>
+  
+          <label class="input-label">Fecha</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Fecha" formControlName="fecha">
+            <mat-error *ngIf="formulario.get('fecha')?.invalid && (formulario.get('fecha')?.dirty || formulario.get('fecha')?.touched)">
+                fecha es un campo requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="form-column">
+          <label class="input-label">Forma de PAgo</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="FORMA PAGO" formControlName="forma_pago">
+            <mat-error *ngIf="formulario.get('forma_pago')?.invalid && (formulario.get('forma_pago')?.dirty || formulario.get('forma_pago')?.touched)">
+                forma_pago es un campo requerido
+              </mat-error>
+
+            
+          </mat-form-field>
+  
+          <label class="input-label">Estado</label>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Estado" formControlName="estado">
+            <mat-error *ngIf="formulario.get('estado')?.invalid && (formulario.get('estado')?.dirty || formulario.get('estado')?.touched)">
+                estado es un campo requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-column">
+          <label class="input-label">Id Vendedor</label>
+          <mat-form-field class="full-width">
+            <mat-select formControlName="id_vendedor">
+                <mat-option *ngFor="let vendedor of datosVendedor" [value]="vendedor.id_vendedor">
+                 {{ vendedor.nombre }}
+               </mat-option>
+             </mat-select>
+            <mat-error *ngIf="formulario.get('id_vendedor')?.invalid && (formulario.get('id_vendedor')?.dirty || formulario.get('id_vendedor')?.touched)">
+                id_vendedor es un campo requerido
+              </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="form-column">
+          <label class="input-label">ID Tienda</label>
+          <mat-form-field class="full-width">
+            <mat-select formControlName="id_tienda">
+                <mat-option *ngFor="let tienda of datosTienda" [value]="tienda.id_tienda">
+                 {{ tienda.nombre_tienda }}
+               </mat-option>
+             </mat-select>
+            <mat-error *ngIf="formulario.get('id_tienda')?.invalid && (formulario.get('id_tienda')?.dirty || formulario.get('id_tienda')?.touched)">
+                id_tienda es un campo requerido
+              </mat-error>
+          </mat-form-field>
+          
+        </div>
+      </div>   
+      <mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" type="submit" [disabled]="formulario.invalid">Actualizar</button>
+      </mat-dialog-actions>
+    </form>
+  </mat-dialog-content>
