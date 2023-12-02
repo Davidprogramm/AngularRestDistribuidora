@@ -6,12 +6,9 @@
     <mat-card-content>
         <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()">
             <div class="form-row">
-                <div class="form-group">
-                    <mat-form-field>
-                        <input matInput type="number" placeholder="Cantidad" formControlName="cantidad" >
-                      </mat-form-field>
+                <div class="form-group">        
+                      
                       <mat-form-field>
-
                         <mat-label>Id Producto</mat-label>
                         <mat-select formControlName="id_producto">
                           <mat-option *ngFor="let producto of datosProducto" [value]="producto.id_producto">
@@ -19,9 +16,17 @@
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
+
+                      <mat-form-field *ngIf="habilitar">
+                        <input matInput type="number" placeholder="Cantidad" formControlName="cantidad">                     
+                      </mat-form-field>
+                      <div *ngIf="habilitar" class="max-cantidad-message">
+                        <span>Mínimo: 1, Máximo: {{ stockProducto }} </span> 
+                      </div>
+                      
                 </div> 
             </div>
-            <button mat-raised-button color="primary" (click)="cheack(id_producto)">Comprobar</button>
+            <button mat-raised-button color="primary" (click)="cheack(formulario.get('id_producto')?.value)">Comprobar</button>
             <button mat-raised-button color="primary" type="submit" [disabled]="formulario.invalid">
             Enviar
           </button>        

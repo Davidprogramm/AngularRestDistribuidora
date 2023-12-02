@@ -52,8 +52,12 @@ export class DetallePedidoCreate {
     
   
   }
-  id_producto!: string;
+
+  public habilitar:boolean=false;
+  id_producto!: any;
   public datosProducto:any=[];
+  public stockProducto: number = 0;
+
   @Output() formularioEnviado: EventEmitter<void> = new EventEmitter<void>();
 
   formulario: FormGroup = this.fb.group({
@@ -77,17 +81,25 @@ getDatos(){
   )
 
 }
+cheack(id_producto: any) {
 
-cheack(id_producto:string){
-  console.log(id_producto)
+  console.log(id_producto);
   this._service.getProducto(id_producto).subscribe(
-    (res)=>{
-console.log(res);
+    (res) => {
+      console.log(res);
+      this.habilitar = true;
+      this.stockProducto = res.stock;
+      this.formulario.get('cantidad')?.setValidators([Validators.required, Validators.min(1), Validators.max(this.stockProducto)]);
+      this.formulario.get('cantidad')?.updateValueAndValidity();
+
+
     },
-    (error)=>{
-      console.log(error)
+    (error) => {
+      console.log(error);
+      this.habilitar = false;
+      this.stockProducto = 0;
     }
-  )
+  );
 }
 
   enviarFormulario() {
