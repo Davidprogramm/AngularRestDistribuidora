@@ -25,3 +25,21 @@ export interface PedidoCrear{
   id_tienda:string;
  
 }
+export interface ProductoCrear{
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  stock:number;
+  unidad_venta:string;
+  id_categoria: string;  
+  id_descuento:string;
+ 
+}
+
+export interface DetalleCrear{
+  cantidad: number;
+  valorTotal: number;
+  id_pedido: string;
+  id_producto:string;
+ 
+}

@@ -6,37 +6,38 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { PeticionesService } from '../../Servicios/PeticionesService';
 import { MatDialog } from '@angular/material/dialog';
-import { VendedorCrear } from '../Models/usuario-crear.model';
+import { PedidoCrear, ProductoCrear, VendedorCrear } from '../Models/usuario-crear.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Output, EventEmitter } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import {MatNativeDateModule} from '@angular/material/core';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
 
 
 
 export interface UserData {
-  id_pedido: string;
-  fecha: string;
-  forma_pago: string;
-  estado: string;
-  id_vendedor:string;
-  id_tienda: string;  
+  id_producto: string;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  stock:number;
+  unidad_venta:string;
+  id_categoria: string;  
+  id_descuento:string;
 
 }
 
 @Component({
-  selector: 'app-pedido',
-  templateUrl: './pedido.component.html',
-  styleUrl: './pedido.component.css'
+  selector: 'app-producto',
+  templateUrl: './producto.component.html',
+  styleUrl: './producto.component.css'
 })
-export class PedidoComponent  implements AfterViewInit,OnInit,OnDestroy {
+export class ProductoComponent  implements AfterViewInit,OnInit,OnDestroy {
  
 
   public datosActualizar:any={}
-  displayedColumns: string[] = ['fecha', 'forma_pago', 'estado', 'id_vendedor', 'id_tienda', 'accion', 'eliminar'];
+  displayedColumns: string[] = ['nombre', 'descripcion', 'precio', 'stock', 'id_categoria','unidad_venta', 'id_descuento', 'accion','eliminar'];
   dataSource: MatTableDataSource<UserData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -47,11 +48,11 @@ export class PedidoComponent  implements AfterViewInit,OnInit,OnDestroy {
     private fb: FormBuilder
     ){
 
-    // Assign the data to the data source for the table to render
+   
     this.dataSource = new MatTableDataSource<UserData>();
   }
   openDialog() {
-    const dialogRef = this.dialog.open(PedidoCreate);
+    const dialogRef = this.dialog.open(ProductoCreate);
 
     dialogRef.componentInstance.formularioEnviado.subscribe(() => {
       this.create();
@@ -79,8 +80,8 @@ export class PedidoComponent  implements AfterViewInit,OnInit,OnDestroy {
   }
 
   eliminar(row: UserData): void {
-    const dialogRef = this.dialog.open(PedidoDelete);
-    dialogRef.componentInstance.id_pedido = row.id_pedido;
+    const dialogRef = this.dialog.open(ProductoDelete);
+    dialogRef.componentInstance.id_pedido = row.id_producto;
 
     const eliminarExitosamenteSubscription = dialogRef.componentInstance.eliminadoExitosamente.subscribe(() => {
       this.create();
@@ -98,7 +99,7 @@ export class PedidoComponent  implements AfterViewInit,OnInit,OnDestroy {
     });
   }
   create() {
-    this._service.getPedido()
+    this._service.getProductos()
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(
             (res) => {
@@ -136,7 +137,7 @@ export class PedidoComponent  implements AfterViewInit,OnInit,OnDestroy {
   openDialogAcciones(row: UserData):void {
      
 console.log(row);
-    const dialogRef = this.dialog.open(PedidoAcciones);
+    const dialogRef = this.dialog.open(ProductoAcciones);
 
     dialogRef.componentInstance.datosActualizar = row;
   
@@ -160,56 +161,57 @@ console.log(row);
 }
 
 @Component({
-  selector: 'pedido-create',
-  templateUrl: './pedido-create.html',
-  styleUrl: './pedido.component.css'
+  selector: 'producto-create',
+  templateUrl: './producto-create.html',
+  styleUrl: './producto.component.css'
 
 
 })
 
-export class PedidoCreate implements OnInit {
+export class ProductoCreate implements OnInit {
 
   constructor(  private fb: FormBuilder,
     private _service: PeticionesService,
     private snackBar: MatSnackBar,
-    private router: Router,
-    private dialogRef: MatDialogRef<PedidoCreate>  
-
   
     ){
     
   
   }
-  public datosVendedor:any=[];
-  public datosTienda:any=[];
-  public opcionFormaPago:any=['Efectivo','Tarjeta Credito','Tarjeta Debito','Transferencia']
+
+  public datosUnidadVenta:any=['unidad','litro','caja 10','caja 20','caja 30','caja 40']
+  public datosCategoria:any=[];
+  public datosDescuento:any=[];
 
   @Output() formularioEnviado: EventEmitter<void> = new EventEmitter<void>();
 
   formulario: FormGroup = this.fb.group({
     
-    fecha: ['', Validators.required],
-    forma_pago: ['', Validators.required],
-    estado: ['', Validators.required],
-    id_vendedor: ['', Validators.required],
-    id_tienda: ['', Validators.required],
+    nombre: ['', Validators.required],
+    descripcion: ['', Validators.required],
+    precio: ['', Validators.required],
+    stock: ['', Validators.required],
+    unidad_venta: ['', Validators.required],
+    id_categoria: ['', Validators.required],
+    id_descuento: ['', Validators.required],
+ 
+
     
   });
 ngOnInit(): void {
-  this.formulario.get('estado')?.setValue('En Toma');
 this.getDatos()
 }
 getDatos(){
-  this._service.getVendedores().subscribe(
+  this._service.getCategoria().subscribe(
     (res)=>{
-      this.datosVendedor=res;
+      this.datosCategoria=res;
     },(error)=>{
       console.log(error)
     }
   )
-  this._service.getTiendas().subscribe(
+  this._service.getDescuento().subscribe(
     (res)=>{
-      this.datosTienda=res;
+      this.datosDescuento=res;
     },(error)=>{
       console.log(error)
     }
@@ -219,24 +221,25 @@ getDatos(){
 
   enviarFormulario() {
     if (this.formulario.valid) {
-      const usuarioCrear: PedidoCreate = this.formulario.value;
-      const id_vendedor:string=this.formulario.value.id_vendedor;
-      const id_tienda:string=this.formulario.value.id_tienda;      
-      this._service.addPedido(usuarioCrear,id_vendedor,id_tienda).subscribe(
+      const usuarioCrear: ProductoCreate = this.formulario.value;
+      const id_categoria:string=this.formulario.value.id_categoria;
+      const id_descuento:any=this.formulario.value.id_descuento;   
+
+      console.log(usuarioCrear)
+
+      this._service.addProducto(usuarioCrear,id_categoria,id_descuento).subscribe(
      
         (res)=>{
           console.log(res)
-          this.mostrarSnackBar('Pedido creado con éxito');
+          this.mostrarSnackBar('Producto creado con éxito');
           this.formularioEnviado.emit();    
-          this.router.navigate(['/detalle-create']);
-          this.dialogRef.close();
-
+      
          
           
         },
         (error)=>{
           console.log(error)
-          this.mostrarSnackBar('Error al crear Pedido. Por favor, inténtelo de nuevo.');
+          this.mostrarSnackBar('Error al crear Producto. Por favor, inténtelo de nuevo.');
         }       
 
       )
@@ -255,28 +258,30 @@ getDatos(){
 
 
 @Component({
-  selector: 'pedido-acciones',
-  templateUrl: './pedido-acciones.html',
-  styleUrl: './pedido.component.css'
+  selector: 'producto-acciones',
+  templateUrl: './producto-acciones.html',
+  styleUrl: './producto.component.css'
   
 
 })
 
 
-export class PedidoAcciones implements OnInit {
-  public datosVendedor:any=[];
-  public datosTienda:any=[];
+export class ProductoAcciones implements OnInit {
+
+  public datosUnidadVenta:any=['unidad','litro','caja 10','caja 20','caja 30','caja 40']
+  public datosCategoria:any=[];
+  public datosDescuento:any=[];
   getDatos(){
-    this._service.getVendedores().subscribe(
+    this._service.getCategoria().subscribe(
       (res)=>{
-        this.datosVendedor=res;
+        this.datosCategoria=res;
       },(error)=>{
         console.log(error)
       }
     )
-    this._service.getTiendas().subscribe(
+    this._service.getDescuento().subscribe(
       (res)=>{
-        this.datosTienda=res;
+        this.datosDescuento=res;
       },(error)=>{
         console.log(error)
       }
@@ -284,7 +289,7 @@ export class PedidoAcciones implements OnInit {
   }
   datosActualizar: UserData | undefined;
  formulario!: FormGroup; 
- dialogRef: MatDialogRef<PedidoAcciones>;
+ dialogRef: MatDialogRef<ProductoAcciones>;
  @Output() Eliminar: EventEmitter<void> = new EventEmitter<void>();
  @Output() Actualzar: EventEmitter<void> = new EventEmitter<void>();
 
@@ -292,7 +297,7 @@ export class PedidoAcciones implements OnInit {
  constructor(private fb: FormBuilder,
   private _service: PeticionesService,  
   private snackBar: MatSnackBar,
-  dialogRef: MatDialogRef<PedidoAcciones>,
+  dialogRef: MatDialogRef<ProductoAcciones>,
   public dialog: MatDialog
   
 
@@ -305,36 +310,41 @@ export class PedidoAcciones implements OnInit {
 ngOnInit(): void {
   this.getDatos();
 console.log(this.datosActualizar)
+
   this.formulario = this.fb.group({
-    id_pedido: [this.datosActualizar?.id_pedido || ''],
-    fecha:[this.datosActualizar?.fecha || '',Validators.required],
-    forma_pago: [this.datosActualizar?.forma_pago || '', Validators.required],
-    estado:[this.datosActualizar?.estado || '',Validators.required], 
-    id_vendedor: [this.datosActualizar?.id_vendedor || '', Validators.required],
-    id_tienda: [this.datosActualizar?.id_tienda || '', Validators.required],   
+    id_producto: [this.datosActualizar?.id_producto || ''],
+    nombre:[this.datosActualizar?.nombre || '',Validators.required],
+    descripcion: [this.datosActualizar?.descripcion || '', Validators.required],
+    precio:[this.datosActualizar?.precio || '',Validators.required], 
+    stock: [this.datosActualizar?.stock || '', Validators.required],
+    unidad_venta: [this.datosActualizar?.unidad_venta || '', Validators.required] ,
+    id_descuento: [this.datosActualizar?.id_descuento || '', Validators.required],   
+    id_categoria: [this.datosActualizar?.id_categoria || '', Validators.required] ,
+    
 
 
   });
+
 }
 
 
-public id_vendedor!: string ;
-public id_tienda!: string;
-update(){
-  var usuarioCrear: VendedorCrear | undefined;
 
-  if (this.formulario.valid) {
-     usuarioCrear = this.formulario.value;
-      this.id_vendedor = this.formulario.value.id_vendedor;
-      this.id_tienda = this.formulario.value.id_tienda;
+update(){
+ 
+
+  if (this.formulario.valid) {    
+
+      const usuarioCrear: ProductoCreate = this.formulario.value;
+      const id_categoria:string=this.formulario.value.id_categoria;
+      const id_descuento:any=this.formulario.value.id_descuento;   
     console.log (usuarioCrear)
     console.log("ENTRO A ACTUALZIAR")
 
-    this._service.updatePedido(usuarioCrear,this.id_vendedor,this.id_tienda).subscribe(
+    this._service.updateProducto(usuarioCrear,id_categoria,id_descuento).subscribe(
      
       (res)=>{
         console.log(res);
-        this.mostrarSnackBar('Pedido Actualizado con Éxito');
+        this.mostrarSnackBar('Producto Actualizado con Éxito');
         this.Actualzar.emit(); 
         this.dialogRef.close();
       },
@@ -362,17 +372,17 @@ mostrarSnackBar(mensaje: string) {
 }
 
 @Component({
-  selector: 'pedido-delete',
-  templateUrl: './pedido-delete.html',
-  styleUrl: './pedido.component.css'
+  selector: 'producto-delete',
+  templateUrl: './producto-delete.html',
+  styleUrl: './producto.component.css'
 })
-export class PedidoDelete implements OnInit {
+export class ProductoDelete implements OnInit {
   @Input() id_pedido?: string;
 
   constructor(
     private _service: PeticionesService,
     private snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<PedidoDelete> 
+    private dialogRef: MatDialogRef<ProductoDelete> // Inyectar MatDialogRef
 
   ) {}
 
@@ -383,24 +393,24 @@ export class PedidoDelete implements OnInit {
     if (this.id_pedido !== undefined) {
       await this.delete();
     } else {
-      console.error("id_pedido es undefined");
+      console.error("id_producto es undefined");
     }
   }
   async delete() {
     try {
       if (this.id_pedido !== undefined) {
-        await this._service.deletePedido(this.id_pedido).toPromise();
-        this.snackBar.open('Pedido eliminado con éxito', 'Cerrar', {
+        await this._service.deleteProducto(this.id_pedido).toPromise();
+        this.snackBar.open('Producto eliminado con éxito', 'Cerrar', {
           duration: 10000,
           verticalPosition: 'top'
         });
         this.eliminadoExitosamente.emit();
-        this.formularioEnviado.emit(); // Emitir evento cuando se completa la eliminación
-        this.dialogRef.close(); // Cerrar el diálogo
+        this.formularioEnviado.emit(); 
+        this.dialogRef.close(); 
       }
     } catch (error) {
       console.error(error);
-      this.snackBar.open('Error al eliminar el pedido', 'Cerrar', {
+      this.snackBar.open('Error al eliminar el Producto', 'Cerrar', {
         duration: 10000,
         verticalPosition: 'top'
       });

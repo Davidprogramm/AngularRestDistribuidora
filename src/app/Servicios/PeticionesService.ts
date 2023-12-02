@@ -150,7 +150,85 @@ deletePedido(id: string): Observable<any> {
     catchError((error) => throwError(() => error))
   );
 }
+// Categoria
+getCategoria(): Observable<any> {
+  const request = "/listcategoria";
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response), 
+    catchError((error) => throwError(() => error)) 
+  );
+}
+//Descuento
+getDescuento(): Observable<any> {
+  const request = "/listdescuentos";
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response), 
+    catchError((error) => throwError(() => error)) 
+  );
+}
 
+// PRODUCTO
+getProductos(): Observable<any> {
+  const request = "/listproductos";
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+getProducto(id_producto:string): Observable<any> {
+  const request = "/getproducto/"+id_producto;
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
+addProducto(nuevo: any, id_categoria: string, id_descuento: string): Observable<any> {
+  const request = "/addproducto/" + id_categoria + "/" + id_descuento;
+  const url = this.urlApi + request;
+  const objetoJson = JSON.stringify(nuevo);
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+  return this._http.post(url, objetoJson, { headers }).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
+updateProducto(update: any,id_categoria:string,id_descuento:string): Observable<any> {
+  const request = "/updateproducto/"+id_categoria+"/"+id_descuento;
+  const url = this.urlApi + request;
+  const objetoJson = JSON.stringify(update);
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+  return this._http.post(url, objetoJson, { headers }).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
+deleteProducto(id: string): Observable<any> {
+  const request = "/deleteproducto/" + id;
+  const url = this.urlApi + request;
+  return this._http.delete(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
+//detallePedido
+addDetalle(nuevo: any, id_pedido: string, id_producto: string): Observable<any> {
+  const request = "/adddetallepedido/" + id_pedido + "/" + id_producto;
+  const url = this.urlApi + request;
+  const objetoJson = JSON.stringify(nuevo);
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+  return this._http.post(url, objetoJson, { headers }).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
   
 
 }
