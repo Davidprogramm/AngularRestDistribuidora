@@ -14,7 +14,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import {MatNativeDateModule} from '@angular/material/core';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-
+import { DetallePedidoCreate } from '../detalle-pedido/detalle-pedido.component';
+import { BehaviorSubject } from 'rxjs';
+import { SharedService } from '../../Servicios/Compartir';
 
 
 export interface UserData {
@@ -47,17 +49,27 @@ export class PedidoComponent  implements AfterViewInit,OnInit,OnDestroy {
     private fb: FormBuilder
     ){
 
-    // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource<UserData>();
   }
   openDialog() {
     const dialogRef = this.dialog.open(PedidoCreate);
 
     dialogRef.componentInstance.formularioEnviado.subscribe(() => {
+      this.datosPedidoCreado = dialogRef.componentInstance.datosPedidoCreado;
       this.create();
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+    });
+  }
+  public datosPedidoCreado: any;
+
+  openDetallePedidoCreate(row: UserData): void {
+    const dialogRef = this.dialog.open(DetallePedidoCreate, {
+      data: {
+        datosPedido: this.datosPedidoCreado,
+        id_pedido: row.id_pedido
+      }
     });
   }
 
@@ -136,6 +148,7 @@ export class PedidoComponent  implements AfterViewInit,OnInit,OnDestroy {
   openDialogAcciones(row: UserData):void {
      
 console.log(row);
+
     const dialogRef = this.dialog.open(PedidoAcciones);
 
     dialogRef.componentInstance.datosActualizar = row;
@@ -169,11 +182,14 @@ console.log(row);
 
 export class PedidoCreate implements OnInit {
 
+
   constructor(  private fb: FormBuilder,
     private _service: PeticionesService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private dialogRef: MatDialogRef<PedidoCreate>  
+    private dialogRef: MatDialogRef<PedidoCreate> ,
+
+    private sharedService: SharedService
 
   
     ){
@@ -183,6 +199,9 @@ export class PedidoCreate implements OnInit {
   public datosVendedor:any=[];
   public datosTienda:any=[];
   public opcionFormaPago:any=['Efectivo','Tarjeta Credito','Tarjeta Debito','Transferencia']
+  
+  datosPedidoCreado: any;  
+
 
   @Output() formularioEnviado: EventEmitter<void> = new EventEmitter<void>();
 
@@ -222,29 +241,27 @@ getDatos(){
       const usuarioCrear: PedidoCreate = this.formulario.value;
       const id_vendedor:string=this.formulario.value.id_vendedor;
       const id_tienda:string=this.formulario.value.id_tienda;      
-      this._service.addPedido(usuarioCrear,id_vendedor,id_tienda).subscribe(
-     
+      this._service.addPedido(usuarioCrear,id_vendedor,id_tienda).subscribe(     
         (res)=>{
           console.log(res)
-          this.mostrarSnackBar('Pedido creado con éxito');
-          this.formularioEnviado.emit();    
-          this.router.navigate(['/detalle-create']);
-          this.dialogRef.close();
+          this.sharedService.enviarPedidoCreado(res);
+          this.mostrarSnackBar('Pedido creado con éxito'); 
 
-         
-          
+          this.router.navigate(['/detalle-create'])
+
+          this.dialogRef.close();                   
         },
         (error)=>{
-          console.log(error)
           this.mostrarSnackBar('Error al crear Pedido. Por favor, inténtelo de nuevo.');
         }       
-
       )
       this.formulario.reset();
       console.log(usuarioCrear);
 
     }
   }
+
+  
   mostrarSnackBar(mensaje: string) {
     this.snackBar.open(mensaje, 'Cerrar', {
       duration: 10000, 
@@ -252,6 +269,8 @@ getDatos(){
     });
   }
 }
+
+
 
 
 @Component({
@@ -395,8 +414,9 @@ export class PedidoDelete implements OnInit {
           verticalPosition: 'top'
         });
         this.eliminadoExitosamente.emit();
-        this.formularioEnviado.emit(); // Emitir evento cuando se completa la eliminación
-        this.dialogRef.close(); // Cerrar el diálogo
+        this.formularioEnviado.emit(); 
+        this.dialogRef.close(); 
+
       }
     } catch (error) {
       console.error(error);

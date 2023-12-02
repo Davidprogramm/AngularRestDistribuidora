@@ -10,20 +10,27 @@
                       
                       <mat-form-field>
                         <mat-label>Id Producto</mat-label>
-                        <mat-select formControlName="id_producto">
-                          <mat-option *ngFor="let producto of datosProducto" [value]="producto.id_producto">
+                        <mat-select formControlName="id_producto" >
+                          <mat-option *ngFor="let producto of datosProductos" [value]="producto.id_producto">
                             {{ producto.nombre | uppercase }} {{producto.id_producto}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
 
                       <mat-form-field *ngIf="habilitar">
-                        <input matInput type="number" placeholder="Cantidad" formControlName="cantidad">                     
+                        <input matInput type="number" placeholder="Cantidad" formControlName="cantidad" (input)="calcularValorTotal()">
                       </mat-form-field>
                       <div *ngIf="habilitar" class="max-cantidad-message">
                         <span>Mínimo: 1, Máximo: {{ stockProducto }} </span> 
-                      </div>
-                      
+                      </div>                    
+                      <span *ngIf="habilitar"> Valor unidad {{datosProducto.precio}}</span>   
+                          
+                      <mat-form-field *ngIf="habilitar">
+                        <mat-label>SUB-TOTAL</mat-label>
+                        <input matInput type="number" placeholder="Valor" formControlName="valorTotal">  
+                      </mat-form-field>
+
+                
                 </div> 
             </div>
             <button mat-raised-button color="primary" (click)="cheack(formulario.get('id_producto')?.value)">Comprobar</button>
@@ -31,5 +38,7 @@
             Enviar
           </button>        
         </form>
+
+         <button mat-raised-button color="accent" *ngIf="pasarAfactura">Ver Factura</button>
     </mat-card-content>
 </mat-card>

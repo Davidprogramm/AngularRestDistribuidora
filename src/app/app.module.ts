@@ -29,6 +29,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductoComponent,ProductoAcciones,ProductoCreate,ProductoDelete } from './Components/producto/producto.component';
 import { DetallePedidoComponent ,DetallePedidoCreate} from './Components/detalle-pedido/detalle-pedido.component';
+
 @NgModule({
   declarations: [
     AppComponent,

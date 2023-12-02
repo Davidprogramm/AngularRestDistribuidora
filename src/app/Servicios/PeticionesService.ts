@@ -178,6 +178,16 @@ getProductos(): Observable<any> {
     catchError((error) => throwError(() => error))
   );
 }
+
+getDescuentoProducto(id_producto:string): Observable<any> {
+  const request = "/descuentoproducto/"+id_producto;
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
 getProducto(id_producto:string): Observable<any> {
   const request = "/getproducto/"+id_producto;
   const url = this.urlApi + request;
@@ -203,6 +213,26 @@ updateProducto(update: any,id_categoria:string,id_descuento:string): Observable<
   const url = this.urlApi + request;
   const objetoJson = JSON.stringify(update);
   const headers = new HttpHeaders().set("Content-Type", "application/json");
+  return this._http.post(url, objetoJson, { headers }).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
+updateStockProducto(stock: number, id_producto: string): Observable<any> {
+  const request = "/updatestock";
+  const url = this.urlApi + request;
+
+  // Crear un objeto con los datos que deseas enviar
+  const update = { stock, id_producto };
+
+  // Convertir el objeto a JSON
+  const objetoJson = JSON.stringify(update);
+
+  // Configurar las cabeceras
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+  // Enviar la solicitud POST con el objeto JSON en el cuerpo
   return this._http.post(url, objetoJson, { headers }).pipe(
     map((response: any) => response),
     catchError((error) => throwError(() => error))
