@@ -222,17 +222,9 @@ updateProducto(update: any,id_categoria:string,id_descuento:string): Observable<
 updateStockProducto(stock: number, id_producto: string): Observable<any> {
   const request = "/updatestock";
   const url = this.urlApi + request;
-
-  // Crear un objeto con los datos que deseas enviar
   const update = { stock, id_producto };
-
-  // Convertir el objeto a JSON
   const objetoJson = JSON.stringify(update);
-
-  // Configurar las cabeceras
   const headers = new HttpHeaders().set("Content-Type", "application/json");
-
-  // Enviar la solicitud POST con el objeto JSON en el cuerpo
   return this._http.post(url, objetoJson, { headers }).pipe(
     map((response: any) => response),
     catchError((error) => throwError(() => error))
@@ -249,6 +241,23 @@ deleteProducto(id: string): Observable<any> {
 }
 
 //detallePedido
+allDetallesPedido(id_pedido:string): Observable<any> {
+  const request = "/allpedidodetalle/"+id_pedido;
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+facturaDate(id_pedido:string): Observable<any> {
+  const request = "/factura/"+id_pedido;
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
 addDetalle(nuevo: any, id_pedido: string, id_producto: string): Observable<any> {
   const request = "/adddetallepedido/" + id_pedido + "/" + id_producto;
   const url = this.urlApi + request;

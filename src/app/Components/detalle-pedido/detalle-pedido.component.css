@@ -112,3 +112,17 @@ table {
   button{
     margin: 10px;
   }
+  .mat-elevation-z8 table {
+    font-size: 16px; 
+  }
+  
+
+  .mat-elevation-z8 td, .mat-elevation-z8 th {
+    font-size: 16px; 
+  }
+.facturaStyle{
+  margin-top: 10px;
+  font-size: 30px;
+  font-weight: bold;
+
+}

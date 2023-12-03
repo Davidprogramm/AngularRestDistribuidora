@@ -33,13 +33,82 @@ export interface UserData {
   templateUrl: './detalle-pedido.component.html',
   styleUrl: './detalle-pedido.component.css'
 })
-export class DetallePedidoComponent {
+export class DetallePedidoComponent implements OnInit,AfterViewInit {
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+  public factura:any=[]
+  create() {
+    console.log(this.datosPedido.id_pedido)
+    this._service.allDetallesPedido(this.datosPedido.id_pedido)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(
+            (res) => {
+                console.log(res);
+                this.dataSource.data = res;
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+        this._service.facturaDate(this.datosPedido.id_pedido).subscribe(
+          (res)=>{
+            console.log(res)
+            this.factura = res.length > 0 ? res[0] : null;
+            
+          },
+          (error)=>{
+            console.log(error)
+          }
+        )
+    
 }
+  displayedColumns: string[] = ['cantidad', 'valor_total', 'nombre',];
+
+  public datosPedido:any=[];
+  dataSource: MatTableDataSource<UserData>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  ngOnInit(): void {
+    this.sharedService.pedidoCreado$.subscribe((pedido) => {
+      console.log('Pedido recibido en DetallePedidoComponent:', pedido);
+      this.datosPedido=pedido;
+    });
+    this.create()
+  }
+ constructor(public dialogRef: MatDialogRef<DetallePedidoComponent>,
+  private sharedService: SharedService,
+  private _service: PeticionesService,
+    public dialog: MatDialog  ,
+    private fb: FormBuilder){
+            this.dataSource = new MatTableDataSource<UserData>();
+
+
+ }
+
+
+ cerrarDialogo(): void {
+  this.dialogRef.close();
+}
+}
+
+
 export interface DetallePedidoCreateData {
   id_pedido: string;
   // Otros campos que puedas recibir
 }
+
+
 
 @Component({
   selector: 'app-detalle-pedido-create',
@@ -86,6 +155,7 @@ ngOnInit(): void {
 
 this.getDatos()
 this.calcularValorTotal();
+
 this.sharedService.pedidoCreado$.subscribe((pedido) => {
   console.log('Pedido recibido en DetallePedidoCreate:', pedido);
 this.dato=pedido;
@@ -207,10 +277,15 @@ calcularValorTotal() {
       console.log(usuarioCrear);
 
     }
+   
+  }
+
+  verFactura() {
     const dialogRef = this.dialog.open(DetallePedidoComponent, {
       // Puedes agregar configuraciones adicionales aquí
-      data: { /* Puedes pasar datos al componente si es necesario */ }
+      data: {  }
     });
+
     dialogRef.afterClosed().subscribe(result => {
       console.log('Diálogo cerrado', result);
     });
