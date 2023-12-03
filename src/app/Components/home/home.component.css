@@ -10,7 +10,7 @@
   
   .example-is-mobile .example-toolbar {
     position: fixed;
-    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  
     z-index: 2;
   }
   
@@ -20,11 +20,13 @@
   
   .example-sidenav-container {
     flex: 1;
-    max-height: calc(100vh - 56px); /* Resta la altura de la barra superior */
+    max-height: calc(100vh - 56px); 
   }
   
   .example-is-mobile .example-sidenav-container {
-    /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
-       `<body>` to be our scrolling element for mobile layouts. */
+
     flex: 1 0 auto;
+  }
+  .example-toolbar-spacer {
+    flex-grow: 1;
   }

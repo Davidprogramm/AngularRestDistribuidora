@@ -268,6 +268,25 @@ addDetalle(nuevo: any, id_pedido: string, id_producto: string): Observable<any> 
     catchError((error) => throwError(() => error))
   );
 }
-  
+//usuario
+
+getUsuario(correo:string): Observable<any> {
+  const request = "/obtenerUsuario/"+correo;
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+addUsuario(nuevoUsuario: any): Observable<any> {
+  const request = "/addusuario";
+  const url = this.urlApi + request;
+  const objetoJson = JSON.stringify(nuevoUsuario);
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+  return this._http.post(url, objetoJson, { headers }).pipe(
+    map((response: any) => response), 
+    catchError((error) => throwError(() => error)) 
+  );
+}
 
 }

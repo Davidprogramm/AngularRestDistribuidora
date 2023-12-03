@@ -7,6 +7,7 @@ import { VendedorComponent } from './Components/vendedor/vendedor.component';
 import { PedidoComponent } from './Components/pedido/pedido.component';
 import { ProductoComponent } from './Components/producto/producto.component';
 import { DetallePedidoComponent, DetallePedidoCreate } from './Components/detalle-pedido/detalle-pedido.component';
+import { UsuarioComponent } from './Components/usuario/usuario.component';
 
 
 const appRoutes: Routes = [
@@ -16,10 +17,9 @@ const appRoutes: Routes = [
   { path:'pedido', component:PedidoComponent},
   { path:'producto', component:ProductoComponent},
   { path:'detalle-pedido', component:DetallePedidoComponent},
-  { path:'detalle-create',component:DetallePedidoCreate}
-
-  // Agrega otras rutas según sea necesario
-];
+  { path:'detalle-create',component:DetallePedidoCreate},
+  {path:'usuario',component:UsuarioComponent}
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes)],

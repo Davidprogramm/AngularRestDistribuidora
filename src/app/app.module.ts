@@ -29,6 +29,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductoComponent,ProductoAcciones,ProductoCreate,ProductoDelete } from './Components/producto/producto.component';
 import { DetallePedidoComponent ,DetallePedidoCreate} from './Components/detalle-pedido/detalle-pedido.component';
+import { AuthModule } from '@auth0/auth0-angular';
+import { UsuarioComponent } from './Components/usuario/usuario.component';
 
 @NgModule({
   declarations: [
@@ -42,11 +44,19 @@ import { DetallePedidoComponent ,DetallePedidoCreate} from './Components/detalle
     VendedorCreate,
     PedidoComponent,PedidoAcciones,PedidoCreate,PedidoDelete, 
     ProductoComponent,ProductoAcciones,ProductoCreate,ProductoDelete,
-     DetallePedidoComponent,DetallePedidoCreate
+     DetallePedidoComponent,DetallePedidoCreate, UsuarioComponent
   ],
   imports: [
     MatCardModule,
     MatSelectModule,
+    AuthModule,
+    AuthModule.forRoot({
+      domain: 'dev-8xz4tn73e02ddp3y.us.auth0.com',
+      clientId: '8ZrZOyafrNaXDPSqWrQLyLYhhk7u81B4',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }),
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
