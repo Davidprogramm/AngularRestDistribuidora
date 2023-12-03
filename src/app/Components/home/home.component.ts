@@ -70,6 +70,8 @@ public habilitarVendedor:boolean=false;
 
         }
       },(error)=>{
+        this.habilitarAdmi=false;
+        this.habilitarVendedor=false;
         console.log(error)
       }
     )  
