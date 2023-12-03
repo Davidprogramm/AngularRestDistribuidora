@@ -43,3 +43,9 @@ export interface DetalleCrear{
   id_producto:string;
  
 }
+export interface UsuarioApp{
+  nombre: number;
+  correo: number;
+  rol: string;
+
+}

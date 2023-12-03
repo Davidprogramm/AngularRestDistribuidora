@@ -30,7 +30,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ProductoComponent,ProductoAcciones,ProductoCreate,ProductoDelete } from './Components/producto/producto.component';
 import { DetallePedidoComponent ,DetallePedidoCreate} from './Components/detalle-pedido/detalle-pedido.component';
 import { AuthModule } from '@auth0/auth0-angular';
-import { UsuarioComponent } from './Components/usuario/usuario.component';
+import {  UsuarioComponent, UsuarioDelete, UsuarioAcciones, UsusarioCreate  } from './Components/usuario/usuario.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { UsuarioComponent } from './Components/usuario/usuario.component';
     VendedorCreate,
     PedidoComponent,PedidoAcciones,PedidoCreate,PedidoDelete, 
     ProductoComponent,ProductoAcciones,ProductoCreate,ProductoDelete,
-     DetallePedidoComponent,DetallePedidoCreate, UsuarioComponent
+     DetallePedidoComponent,DetallePedidoCreate, UsuarioComponent,UsuarioAcciones,UsusarioCreate,UsuarioDelete
   ],
   imports: [
     MatCardModule,

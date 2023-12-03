@@ -6,13 +6,15 @@
         <span class="example-toolbar-spacer"></span>
 
         <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-          <button mat-flat-button color="warn" (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })">
-            Log out
+          <button mat-icon-button color="warn" (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })">
+            <mat-icon>exit_to_app</mat-icon>
           </button>
         </ng-container>
     
         <ng-template #loggedOut>
-          <button mat-flat-button color="accent" (click)="auth.loginWithRedirect()">Log in</button>
+          <button mat-icon-button color="accent" (click)="auth.loginWithRedirect()">
+            <mat-icon>login</mat-icon>
+          </button>
         </ng-template>
 
       </mat-toolbar>
@@ -27,7 +29,7 @@
             <a *ngIf="habilitarAdmi" mat-list-item routerLink="/vendedor">Vendedor</a>
             <a mat-list-item routerLink="/pedido">Pedido</a>
             <a mat-list-item routerLink="/producto">Producto</a>
-            <a mat-list-item routerLink="/usuario">Usuario</a>
+            <a *ngIf="habilitarAdmi" mat-list-item routerLink="/usuario">Usuario</a>
 
 
           </mat-nav-list>

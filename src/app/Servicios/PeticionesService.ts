@@ -278,6 +278,14 @@ getUsuario(correo:string): Observable<any> {
     catchError((error) => throwError(() => error))
   );
 }
+getUsusarios(): Observable<any> {
+  const request = "/allusuarios"
+  const url = this.urlApi + request;
+  return this._http.get(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
 addUsuario(nuevoUsuario: any): Observable<any> {
   const request = "/addusuario";
   const url = this.urlApi + request;
@@ -288,5 +296,25 @@ addUsuario(nuevoUsuario: any): Observable<any> {
     catchError((error) => throwError(() => error)) 
   );
 }
+deleteUsuario(id_usuario: string): Observable<any> {
+  const request = "/deleteususario/" + id_usuario;
+  const url = this.urlApi + request;
+  return this._http.delete(url).pipe(
+    map((response: any) => response),
+    catchError((error) => throwError(() => error))
+  );
+}
+
+updateUsusario(update:any):Observable<any>{
+  const request = "/updateusuario";
+  const url = this.urlApi + request;
+  const objetoJson = JSON.stringify(update);
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+  return this._http.post(url, objetoJson, { headers }).pipe(
+    map((response: any) => response), 
+    catchError((error) => throwError(() => error)) 
+  );
+}
+
 
 }
